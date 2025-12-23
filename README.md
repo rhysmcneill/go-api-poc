@@ -1,86 +1,103 @@
-# 🧩 Go Tasks API
 
-A beginner-friendly **REST API** built in **Go**, designed to practice real-world backend fundamentals — HTTP routing, JSON handling, validation, persistence, and testing — using idiomatic Go and the standard library first.
+# go-api-poc — Books API (PoC)
 
----
+Lightweight Proof-of-Concept REST API in Go for learning HTTP handlers, routing, and simple in-memory data management. This repo implements a minimal books service (in-memory) with basic CRUD endpoints so you can experiment with handlers, JSON, and testing.
 
-## 🎯 Goal
+## What this PoC demonstrates
 
-Build a small, maintainable REST API for managing tasks.  
-Learn how to:
+- Project layout using `cmd/` and `internal/`
+- HTTP handlers with `chi` routes
+- JSON request/response handling
+- Simple in-memory store and service layer
+- Example curl commands to exercise the API
 
-- Structure a Go project cleanly (`cmd/`, `internal/`)
-- Implement CRUD routes using `net/http`
-- Handle JSON requests and responses
-- Add validation and consistent error handling
-- Swap between an in-memory and SQLite data store
-- Write tests for handlers and data layers
+## Quick overview
 
----
+- Server listens on port `3000` (see `cmd/server/main.go`).
+- Primary resource: `books` with fields `id`, `Title`, and `Author`.
+- JSON field names in this project are case-sensitive and currently use `id`, `Title`, and `Author` to match the model tags.
 
-## ⚙️ Tech Stack
+## Endpoints
 
-| Component | Choice | Notes |
-|------------|---------|-------|
-| Language | Go 1.21+ | No frameworks — focus on standard library |
-| Routing | `net/http` | Learn fundamentals before using `chi` |
-| Storage | In-memory → SQLite | Same interface, easy swap |
-| Config | Environment vars | Keep it simple |
-| Testing | `testing` + `httptest` | Standard Go tooling |
+- `GET /health` — basic health check
+- `GET /books` — list all books
+- `GET /books/{id}` — get a single book by numeric id
+- `POST /books` — create a new book (JSON body)
+- `PUT /books/{id}` — replace/update a book (JSON body)
+- `DELETE /books/{id}` — delete a book by id
 
----
+## Book model
 
-## 📁 Project Structure
+Fields in the `models.Books` struct:
 
-``` bash
-myapi/
-cmd/api/ # main entrypoint (main.go)
-internal/http/ # handlers, routing, middleware
-internal/store/ # in-memory + SQLite stores
-internal/core/ # validation, error helpers
-testdata/ # example JSON or fixtures
+- `id` (int) — JSON key `id`
+- `Title` (string) — JSON key `Title`
+- `Author` (string) — JSON key `Author`
+
+Example JSON body for creating a book (note capital `Title`/`Author` keys):
+
+```json
+{
+	"id": 4,
+	"Title": "Night of the Museum",
+	"Author": "Rhys McNeill"
+}
 ```
 
+## Run locally
 
----
-
-## 🧱 Development Phases
-
-| Phase | Goal |
-|-------|------|
-| **0** | Define API contract (README + curl tests) ✅ |
-| **1** | Implement server, routes, and in-memory store |
-| **2** | Add SQLite persistence and swapable store |
-| **3** | Add validation, error helpers, and logging |
-| **4** | Write tests for handlers and stores |
-| **5** *(optional)* | Add pagination, filtering, and CORS |
-
----
-
-## 🧪 Endpoints
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/healthz` | Health check |
-| `GET` | `/tasks` | List tasks |
-| `POST` | `/tasks` | Create task |
-| `GET` | `/tasks/{id}` | Get one task |
-| `PATCH` | `/tasks/{id}` | Update task |
-| `DELETE` | `/tasks/{id}` | Delete task |
-
----
-
-## 🧠 Key Learning Outcomes
-
-- Structuring Go projects for clarity and growth  
-- Using `context` and `sync` safely  
-- Writing clean, testable handlers  
-- Understanding REST design and validation patterns  
-
----
-
-## 🚀 Getting Started
+Build and run the server from the repository root:
 
 ```bash
-go run ./cmd/api
-curl http://localhost:8080/healthz
+cd /home/rmcneill/Desktop/go-api-poc
+go run ./cmd/server
+```
+
+The server listens on `:3000` by default.
+
+## Useful curl examples
+
+- List all books:
+
+```bash
+curl -i http://localhost:3000/books
+```
+
+- Get one book (id = 2):
+
+```bash
+curl -i http://localhost:3000/books/2
+```
+
+- Create a new book (returns 201 on success):
+
+```bash
+curl -i -X POST http://localhost:3000/books \
+	-H "Content-Type: application/json" \
+	-d '{"id":5,"Title":"Example Book","Author":"Jane Doe"}'
+```
+
+- Update (replace) a book (id = 5):
+
+```bash
+curl -i -X PUT http://localhost:3000/books/5 \
+	-H "Content-Type: application/json" \
+	-d '{"id":5,"Title":"Updated","Author":"Jane"}'
+```
+
+- Delete a book (id = 3):
+
+```bash
+curl -i -X DELETE http://localhost:3000/books/3
+```
+
+## Tests
+
+Run the test suite (if present) with:
+
+```bash
+go test ./...
+```
+
+---
+Updated README to reflect this repo's current Books API PoC.
