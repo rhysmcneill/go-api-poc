@@ -1,0 +1,56 @@
+# ================================
+# Go build artifacts
+# ================================
+
+# compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# output directories
+/bin/
+*.out
+
+# ================================
+# Go modules / dependencies
+# ================================
+/vendor/
+
+# ================================
+# IDE / Editor files
+# ================================
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Vim swap / backup files
+*.swp
+*~
+
+# ================================
+# OS-specific files
+# ================================
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# ================================
+# Environment / secrets
+# ================================
+
+.env
+
+# ================================
+# Optional: Coverage / test output
+# ================================
+
+*.cover
+*.test
