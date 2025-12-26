@@ -84,3 +84,5 @@ func TestDeleteBook(t *testing.T) {
 		t.Errorf("Expected 2 books after deletion, got %d", len(service.GetAllBooks()))
 	}
 }
+
+// TODO: add handler tests in internal/handlers package to avoid import cycles

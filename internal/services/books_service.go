@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/rhysmcneill/go-api-poc/internal/models"
 )
@@ -47,7 +46,6 @@ func (s *BookService) GetBookById(id int) (models.Books, error) {
 // UpdateBook updates a book by its ID
 func (s *BookService) UpdateBook(id int, updatedBook models.Books) (models.Books, error) {
 	for i, book := range s.books {
-		fmt.Printf("This is %d & %v", i, book)
 		if book.Id == id {
 			s.books[i] = updatedBook
 			return updatedBook, nil
